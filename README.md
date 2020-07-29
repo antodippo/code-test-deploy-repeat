@@ -4,5 +4,5 @@ Continuous delivery, deployment, integration: a lot of buzzwords of our times st
 
 We'll go through each of the stages - coding, testing, deploying (and delivering) - and we'll find out (spoiler!) why the road to continuous delivery is valuable even if you're not going to deploy in production many times per day.
 
-Talk by Antonello D'Ippolito (https://antodippo.com), based on reveal.js framework (https://revealjs.com/)
+Talk by Antonello D'Ippolito (https://antodippo.com/code-test-deploy-repeat), based on reveal.js framework (https://revealjs.com/)
 

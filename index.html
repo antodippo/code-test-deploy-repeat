@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>CODE, TEST, DEPLOY, REPEAT</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
@@ -44,72 +44,200 @@
 					<p>@antodippo</p>
 					<aside class="notes">
 						VONQ is a company that helps other companies to find the right talent for their job vacancies. 
-						We have a platform that integrates different services for job marketing, guiding the recruiter from 
-						the classification of his vacancy to the recommendations for channels on which advertise it. They are 
-						mainly written in PHP and Javascript, but also Python and Scala for the machine learning part. I'll 
-						tell you how we are trying to build continuous stuff.
+						We have a platform that integrates different services for job marketing, guiding the recruiter with 
+						recommendations for channels on which advertise it. They are 
+						mainly written in PHP and Javascript, but also Python and Scala for the machine learning part. 
+						I'll tell you how we are trying to build continuous stuff.
+					</aside>
+				</section>
+
+
+				<section>
+					<h2><a>Code</a></h2>
+				</section>
+
+				<section>
+					<p>FAST AND TINY PRs</p>
+					<p class="fragment">CODE REVIEWS</p>
+					<p class="fragment">PAIR PROGRAMMING</p>
+				</section>
+
+				<section>
+					<h3>FEATURE TOGGLES</h3>
+					<img src="img/toggle.png">
+					<aside class="notes">
+						Feature toggles (often called also feature flags) are the technique for adding a functionality in such 
+						a way that it can be turned on or off, and it allows developers and product managers to: <br/>
+						- integrate code in master branch often, even if a feature is incomplete <br/>
+						- change the system behaviour without changing the code <br/>
+						- make A/B testing, experimenting feature, doing partial releases, but we'll get to that
 					</aside>
 				</section>
 
 				<section>
-					<section>
-						<h2><a>Code</a></h2>
-					</section>
-
-					<section>
-						<p>FAST AND TINY PRs</p>
-						<p class="fragment">CODE REVIEWS</p>
-						<p class="fragment">PAIR PROGRAMMING</p>
-						<aside class="notes">
-							No matter how big is the feature, just break it in small chunks and when a chunk is ready just 
-							make a pull request. The result is small PRs, easily mergeable in the master branch, and easily 
-							reviewable. <br/>
-							Well, we make a lot of code reviews, it's a significant part of our daily work, but it has a lot 
-							of advantages. The most important one is probably the fact that we own the code as a team. We try 
-							also to do cross team and cross-language code reviews, that is forcing us to improve the shared 
-							knowledge between the teams. We learn and we own the code as a team.<br/>
-							And to keep learning, share the knowledge and also to onboard new team members, we try to pair on 
-							every feature that we build, and we have specific rules for that, like using Pomodoro technique 
-							and switch driver and navigator each pomodoro.
-						</aside>
-					</section>
-
-					<section>
-						<h3>FEATURE TOGGLES</h3>
-						<img src="img/toggle.png">
-						<aside class="notes">
-							Feature toggles (often called also feature flags) are the technique for adding a functionality in such 
-							a way that it can be turned on or off, and it allows developers and product managers to: <br/>
-							change the system behaviour without changing the code <br/>
-							integrate code in master branch often, even if a feature is incomplete <br/>
-							make A/B testing, experimenting feature, doing partial releases, but we'll get to that
-						</aside>
-					</section>
-
-					<section>
-						<pre data-id="code-animation"><code width="300px" class="PHP" data-trim data-line-numbers>
-							if ($toggle->isActive()) {
-								$this->newFancyFunctionality();
-							} else {
-								$this->oldFunctionality();
-							}
-						</code></pre>
-						<aside class="notes">
-							This is how a feature toggle in code can look like. As you may have understood this is technical 
-							debt, there is a price to pay to use this technique, but there are also ways to pay this debt back. 
-						</aside>
-					</section>
-
-					<section>
-						<img src="img/toggle-types.png">
-						<small>
-							<a href="https://www.martinfowler.com/articles/feature-toggles.html" target="_blank">
-								https://www.martinfowler.com/articles/feature-toggles.html
-							</a>
-						</small>
-					</section>
+					<pre data-id="code-animation"><code width="300px" class="PHP" data-trim data-line-numbers>
+						if ($toggleManager->isActive('new_fancy_functionality')) {
+							$this->newFancyFunctionality();
+						} else {
+							$this->oldFunctionality();
+						}
+					</code></pre>
 				</section>
 
+				<section>
+					<img src="img/toggle-types.png">
+					<small>
+						<a href="https://www.martinfowler.com/articles/feature-toggles.html" target="_blank">
+							https://www.martinfowler.com/articles/feature-toggles.html
+						</a>
+					</small>
+					<aside class="notes">
+						- release toggles, which allow incomplete features to be integrated into the master branch, and turned on 
+						only when completed or when product management decides to: "separating release from deployment". They 
+						should have a short life and be changed in a more static way, at the deployment stage <br/>
+						- experiment toggles, with which you can place users in specific cohorts and show them a specific version 
+						of a feature. They should have a short life and be changed in a dynamic way, probably on each request <br/>
+						- ops toggle, to control operational aspects of the system, for example to measure the performance of a 
+						specific functionality before rolling it out to all users. They are usually short-lived, but there could 
+						also be long-lived ops toggles to switch off heavy and not vital functionalities. They are often managed 
+						as a runtime configuration <br/>
+						- permission toggles, to release a feature to a set of "premium" users. They are very dynamic, changing 
+						for every request, and long-lived <br/>
+					</aside>
+				</section>
+
+				<section>
+					<p><b>DECOUPLE</b> TOGGLE FROM DECISION </p>
+					<p class="fragment"><b>CENTRALIZE</b> THE LOGIC</p>
+					<p class="fragment"><b>AVOID</b> CONDITIONALS</p>
+					<p class="fragment"><b>REMOVE</b> TOGGLES</p>
+				</section>
+
+				<section>
+					<p>ACTIVE</p>
+					<p class="fragment">INACTIVE</p>
+					<p class="fragment">CONDITIONALLY ACTIVE</p>
+				</section>
+
+				<section>
+					<h2><a>TEST</a></h2>
+				</section>
+				
+				<section data-background="img/pyramid-giza.jpg"></section>
+				
+				<section data-background="img/pyramid-rome.jpg"></section>
+				
+				<section data-background="img/pyramid-dsotm.jpg"></section>
+				
+				<section>
+					<img src="img/pyramid-tests.png"/>
+				</section>
+
+				<section>
+					<h2><a>DEPLOY</a></h2>
+				</section>
+
+				<section>
+					<blockquote cite="">
+						<h3>&ldquo;IF IT HURTS, <br/>DO IT MORE OFTEN&rdquo;</h3>
+					</blockquote>
+				</section>
+
+				<section>
+					<img src="img/deploy-risk.png">
+				</section>
+
+				<section>
+					<h3>EVERYONE CAN DEPLOY</h3>
+				</section>
+
+				<section>
+					<h3>EVERYONE <a>SHOULD</a> DEPLOY</h3>
+				</section>
+
+				<section>
+					<img src="img/pipelines.png">
+				</section>
+
+				<section>
+					<h3>MONITOR EVERYTHING</h3>
+					<p class="fragment">ERROR LOGS</p>
+					<p class="fragment">CRONS EXIT STATUS</p>
+					<p class="fragment">EXTERNAL SERVICES CALLS RESPONSE TIME</p>
+					<p class="fragment">CONTROLLERS LOADING TIME</p>
+				</section>
+
+				<section>
+					<h2><a>DELIVER</a></h2>
+				</section>
+
+				<section>
+					<h3>DECOUPLE DEPLOY<br/> FROM RELEASE</h3>
+				</section>
+
+				<section>
+					<p>A/B TESTING</p>
+					<p class="fragment">CANARY RELEASES</p>
+					<p class="fragment"><img src="img/canary.png"/></p>
+				</section>
+				
+				<section>
+					<h3>Yeah, ok, but... <br/>what's in it for me?</h3>
+				</section>
+
+				<section>
+					<h3>IT SHARPENS YOUR DEVOPS SKILLS</h3>
+				</section>
+
+				<section>
+					<h3>STRESS FREE DEPLOYS</h3>
+				</section>
+
+				<section data-background="img/deploy-friday.jpg"></section>
+
+				<section>
+					<h3>FAST FEEDBACK</h3>
+					<p class="fragment">FROM CI</p>
+					<p class="fragment">FROM MONITORING</p>
+					<p class="fragment">FROM USERS</p>
+				</section>
+
+				<section>
+					<h3>YOU'RE GONNA FAIL.<br/> THE PROBLEM IS <a>HOW SOON</a></h3>
+				</section>
+
+				<section data-background="img/continuous-delivery.jpg"></section>
+
+				<section>
+					<blockquote cite="">
+						<p>&ldquo;That’s why, even if you can’t actually release every set of changes that passes all your tests, 
+							<br/><b>you should aim to create a process that would let you do so</b> if you choose to.&rdquo;</p>
+						<small>Continuous Delivery - Jez Humble, David Farley</small>
+					</blockquote>
+					<aside class="notes">
+						- automating your entire build, deploy, test, and release process. <br/>
+						- comprehensive, reliable set of automated tests. <br/>
+						- writing system tests that run against a production-like environment. <br/>
+					</aside>
+				</section>
+
+				<section>
+					<blockquote cite="">
+						<h3>&ldquo;El camino es la recompensa&rdquo;</h3>
+						<p>Oscar W. Tabarez</p>
+					</blockquote>
+				</section>
+
+				<section>
+					<h1>THANKS!</h1>
+					<img width="300px" src="img/twitter-qr.png">
+					<small>
+						<a>Antonello D'Ippolito</a> | 
+						<a href="https://twitter.com/antodippo" target="_blaak">twitter.com/antodippo</a> | 
+						<a href="https://antodippo.com" target="_blaak">antodippo.com</a>
+					</small>
+					<small>(no canaries were harmed in the making of this talk)</small>
+				</section>
 			</div>
 		</div>
 

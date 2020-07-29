@@ -282,7 +282,9 @@ export default {
 	hideCursorTime: 5000,
 
 	// Script dependencies to load
-	dependencies: [],
+	dependencies: [
+		{ src: 'plugin/title-footer/title-footer.js', async: true, callback: function() { title_footer.initialize('CODE, TEST, DEPLOY, REPEAT - Antonello D\'Ippolito - @antodippo'); } }
+	],
 
 	// Plugin objects to register and use for this presentation
 	plugins: []
